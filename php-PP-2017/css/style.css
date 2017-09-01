@@ -1,0 +1,36 @@
+html,
+body {
+  height: 100%;
+}
+
+body {
+  margin: 0;
+  padding-bottom: 70px;
+  padding-top: 70px;
+}
+
+footer, header {
+  width: 100%;
+}
+
+.container-fluid{
+  padding: 0;
+}
+
+.underline {
+  text-decoration: underline;
+}
+
+.center {
+  text-align: center;
+}
+
+.separate {
+  height : 150px;
+}
+
+.border {
+  margin: 2px;
+  padding: 2px;
+  border: 5px;
+}
