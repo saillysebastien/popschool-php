@@ -1,5 +1,8 @@
 <?php
 
+// declare(strict_types=1);
+
+
 function addition($a, $b) {
   return $a + $b;
 }
@@ -71,6 +74,7 @@ function booleanToString4(bool $booleanValue){
 }
 
 echo "Booléen<br />\n";
+
 echo booleanToString4(true);
 echo "<br />\n";
 

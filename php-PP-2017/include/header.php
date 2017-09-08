@@ -1,5 +1,4 @@
 <?php
-
 include("config/db.php");
 $connection = new mysqli(
   $db_host,

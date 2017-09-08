@@ -4,7 +4,7 @@ include("config/db.php");
 $connection = new mysqli(
   $db_host,
   $db_user,
-  $deb_password,
+  $db_password,
   $db_base
 );
 
