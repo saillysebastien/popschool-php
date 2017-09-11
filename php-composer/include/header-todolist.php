@@ -21,9 +21,9 @@
     <nav class="navbar navbar-fixed-top navbar-inverse bg-inverse">
 
         <ul class="nav nav-tabs nav-fixed">
-          <li class="navbar"><a href="todolist-select-html.php">Tableaux des tâches</a></li>
-          <li class="navbar"><a href="todolist-html.php">Listes de tâches</a></li>
-          <li class="navbar"><a href="todolist-insert-html.php">Création de tâche</a></li>
+          <li class="navbar"><a href="index-html.php"><i class="glyphicon glyphicon-home"></i>&nbsp;Accueil</a></li>
+          <li class="navbar"><a href="todolist-select-html.php"><i class="glyphicon glyphicon-th-list"></i>&nbsp;Tableaux des tâches</a></li>
+          <li class="navbar"><a href="todolist-insert-html.php"><i class="glyphicon glyphicon-plus"></i>&nbsp;Création de tâche</a></li>
         </ul>
 
     </nav>

@@ -6,40 +6,44 @@ $sql = "SELECT * FROM todo";
 $stmt = $conn->query($sql);
 
 ?>
-<!DOCTYPE html>
-<html lang="fr">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta http-equiv="X-UA-Compatible" content="ie=edge">
 
-  <title>Passage en veille</title>
-
-  <link rel="stylesheet" href="../../assets/css/style.css" />
-  <link rel ="stylesheet" href="../assets/css/bootstrap.min.css" />
-  <link rel ="stylesheet" href="../assets/css/bootstrap-theme.min.css" />
-
-</head>
-<body>
-
-  <h2>Taches à effectuer : <?=$stmt->rowCount() ?></h2>
+  <h2>Nombre de tâches enregistré: <?=$stmt->rowCount() ?></h2>
   <?php
 
   printf("
-  <div class = 'container'>
-  <table class = 'table table-bordered table-hover'>
+  <div class = 'container-fluid'>
+  <table class = 'table table-bordered table-striped'>
   <thead>
   <tr>
-  <td class = 'col-md-2'> Id </td>
-  <td class = 'col-md-2'> Titre </td>
-  <td class = 'col-md-3'> Description </td>
-  <td class = 'col-md-3'> Date limite </td>
-  <td class = 'col-md-2'> Statut </td>
-  </tr>
+  <td class = 'col-md-1 center'> Id </td>
+  <td class = 'col-md-2 center'> Titre </td>
+  <td class = 'col-md-4 center'> Description </td>
+  <td class = 'col-md-2 center'> Date limite </td>
+  <td class = 'col-md-1 center'> Statut </td>
+  <td class = 'col-md-1 center'> Editer </td>
+  <td class = 'col-md-1 center'> Supprimer </td>
+    </tr>
   </thead>
   <tbody>");
   while ($row = $stmt->fetch()) {
-    printf("<tr> <td class = 'col-md-2'>%s</td> <td class = 'col-md-2'>%s</td> <td class = 'col-md-3'>%s</td> <td class = 'col-md-3'>%s</td> <td class = 'col-md-2'>%s</td>\n</tr>", $row['id'], $row['title'], $row['description'], $row['deadline'], $row['done']);
+    printf("<tr>
+    <td class = 'col-md-1 center'>%s</td>
+    <td class = 'col-md-2 center'>%s</td>
+    <td class = 'col-md-4 center'>%s</td>
+    <td class = 'col-md-2 center'>%s</td>
+    <td class = 'col-md-1 center'>%s</td>
+    <td class = 'col-md-1 center'><a href='todolist-update-html.php?id=%s'><i class='glyphicon glyphicon-edit'></i>&nbsp;</a>
+    <td class = 'col-md-1 center'><a  onclick=\"return window.confirm(&quot;Voulez vraiment supprimer cet élément ?&quot;);\" href='todolist-delete-html.php?id=%s'><i class='glyphicon glyphicon-trash'></i>&nbsp;</a>
+    </td>\n
+    </tr>",
+    $row['id'],
+    $row['title'],
+    $row['description'],
+    $row['deadline'],
+    $row['done'],
+    $row['id'],
+    $row['id']
+  );
   }
   printf("
   </table

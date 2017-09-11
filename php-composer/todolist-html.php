@@ -23,8 +23,8 @@ $stmt = $conn->query($sql);
           <div class="form-group">
           <label class="col-md-4 control-label" for="edit_button">Id n° %s %s</label>
           <div class="col-md-8">
-          <a href="todolist-modify-html.php?id=%s" id="edit_button%s" name="edit%s" class="btn btn-success">Éditer</a>
-          <a href="todolist-delete html.php?id=%s" id="del_button%s" name="del%s" class="btn btn-danger">Supprimer</a>
+          <a href="todolist-update-html.php?id=%s" id="edit_button%s" name="edit%s" class="btn btn-success">Éditer</a>
+          <a href="todolist-delete-html.php?id=%s" id="del_button%s" name="del%s" class="btn btn-danger">Supprimer</a>
           </div>
           </div>
           ',

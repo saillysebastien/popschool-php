@@ -1,14 +1,14 @@
 <?php
 
-include('include/header-todolist.php');
 require('vendor/autoload.php');
 require('todolist-connect.php');
 
-$messages = [];
+$informations = [];
+$errors = [];
 $title = '';
 $description = null;
 $deadline = null;
-$done = null;
+$done = false;
 
 if ($_POST) {
   $valid = true;
@@ -17,7 +17,7 @@ if ($_POST) {
     $title = $_POST['title'];
   } else {
     $valid = false;
-    $messages['title'] = "<div class='alert alert-warning center'>Vous devez spécifier un titre</div>";
+    $errors['title'] = 'Vous devez spécifier un titre';
   }
 
   if (isset($_POST['description']) && !empty(trim($_POST['description']))) {
@@ -28,23 +28,27 @@ if ($_POST) {
     $deadline = $_POST['deadline'];
   }
 
-  if (isset($_POST['done']) && !empty(trim($_POST['done']))) {
-    $deadline = $_POST['done'];
+  if (isset($_POST['done'])) {
+    $done = true;
   }
 
   if ($valid) {
     try {
-      $conn->insert('todo', [
+      $count = $conn->insert('todo', [
         'title' => $title,
         'description' => $description,
         'deadline' => $deadline,
-        'done' => (bool) $done,
+        'done' => $done,
       ]);
+
+      $lastInsertId = $conn->lastInsertId();
     } catch (Exception $e) {
+      // echo $e->getMessage();
       header('Location: error500.html', true, 302);
       exit();
     }
-    $messages['form'] = "<div class='alert alert-success center'>Tâche créée</div>";
+
+    $informations['form'] = $count . ' tâche créée (id : ' . $lastInsertId . ')';
   }
 }
 
@@ -52,62 +56,82 @@ if ($_POST) {
 <!DOCTYPE html>
 <html lang="fr">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta http-equiv="X-UA-Compatible" content="ie=edge">
-  <title>Création de tache</title>
-  <link rel ="stylesheet" href="assets/css/bootstrap.min.css" />
-  <link rel ="stylesheet" href="assets/css/bootstrap-theme.min.css" />
-  <link rel ="stylesheet" href="assets/css/style.css" />
-
-</head>
-<body>
-
-  <div class="container-fluid">
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Liste des tâches</title>
 
 
-    <?php
-    if (isset($messages['form'])) {
-      echo $messages['form'];
-    }
+  <link rel ="stylesheet" href="../assets/css/bootstrap.min.css" />
+  <link rel ="stylesheet" href="../assets/css/bootstrap-theme.min.css" />
+  <link rel="stylesheet" href="../assets/css/style.css" />
 
-    if (isset($messages['title'])) {
-      echo $messages['title'];
-    }
-     ?>
 
-     <h1 class="col-md-offset-4 col-md-4 center">Création d'une tâche</h1>
-     <div class="separate"></div>
 
-    <form  class="form-horizontal center" action="<?= basename(__FILE__) ?>" method="post">
+  <body>
 
-      <div class="form-group col-md-12">
-        <input type="text" name="title" value="<?= htmlentities($title) ?>" placeholder="Titre *" class="center"/>
+    <div class="container">
+
+      <div>
+        <?php
+        if (isset($informations['form'])) {
+          echo $informations['form'];
+        }
+        ?>
       </div>
 
-      <div class="form-group col-md-12">
-        <input type="text" name="description" value="<?= htmlentities($task['description']) ?>" placeholder="Description" class="center"></input>
+      <form action="<?= basename(__FILE__) ?>?id=<?= $id ?>" method="post">
+
+        <div>
+          <?php
+          if (isset($errors['title'])) {
+            echo $errors['title'];
+          }
+          ?>
+        </div>
+
+        <div class="separate"></div>
+        <legend class="center">Création d'une tâche</legend>
+        <div class="separate"></div>
+
+        <form  class="form-horizontal" action="<?= basename(__FILE__) ?>" method="post">
+
+          <div class="form-group col-md-12 center">
+            <label class="col-md-4 control-label" for="title">Nom de la veille</label>
+            <div class="col-md-4">
+              <input type="text" name="title" value="<?= htmlentities($title) ?>" placeholder="Titre *" class="center"/>
+            </div>
+          </div>
+
+          <div class="form-group col-md-12 center">
+            <label class="col-md-4 control-label" for="description">Description de la veille</label>
+            <div class="col-md-4">
+              <input type="text" name="description" value="<?= htmlentities($description) ?>" placeholder="Description" class="center"></input>
+            </div>
+          </div>
+
+          <div class="form-group col-md-12 center">
+            <label class="col-md-4 control-label" for="deadline">Durée de la veille</label>
+            <div class="col-md-4">
+              <input class="center" type="datetime" name="deadline" placeholder="AAAA-MM-JJ HH:MM:SS" value="<?= htmlentities($deadline) ?>"/>
+            </div>
+          </div>
+
+          <div class="form-group col-md-12 center">
+            <label class="col-md-4 checkbox-inline" for="done"> Cochez si la tâche est effectué</label>
+            <div class="col-md-4">
+              <input type="checkbox" name="done" value="1" <?php if ($done) { echo 'cheched'; } ?> />
+            </div>
+          </div>
+
+          <div class="form-group col-md-12 center">
+            <input type="submit" value="valider" class="btn btn-primary">
+            <a href="todolist-select-html.php" name="retour" class="btn btn-danger">Retour</a>
+          </div>
+
+        </form>
+
       </div>
 
-      <div class="form-group col-md-12">
-        <input type="datetime" name="deadline" placeholder="AAAA-MM-JJ HH:MM:SS" value="<?= htmlentities($deadline) ?>" class="center"/>
-      </div>
-
-      <div class="for-group col-md-12">
-      <label class="col-md-offset-2 col-md-2 checkbox-inline" for="done"> Cochez si la tâche est effectué</label>
-      <input class="col-md-4" type="checkbox" name="done" value="1" <?php if ($done) { echo 'cheched'; } ?> />
-    </div>
-
-      <div class="form-group col-md-12">
-        <input type="submit" value="valider" class="btn btn-primary"><br />
-      </div>
-
-    </form>
-
-  </div>
-
-  <script src="assets/js/jquery-3.2.1.min.js"></script>
-  <script src="assets/js/bootstrap.min.js"></script>
-
-</body>
-</html>
+    </body>
+    </html>
