@@ -37,11 +37,8 @@ if (isset($_GET["id"]) && $_GET["id"] != "" && $_GET["id"] != 0) {
     <form method="post" class="form-horizontal">
       <fieldset>
 
-        <!-- Form Name -->
         <legend>Modifier un élève</legend>
 
-        <!-- Text input
-        Notez les balises PHP qui permettent l’affichage dynamique -->
         <div class="form-group">
           <label class="col-md-4 control-label" for="firstname">Prénom</label>
           <div class="col-md-4">
@@ -70,7 +67,6 @@ if (isset($_GET["id"]) && $_GET["id"] != "" && $_GET["id"] != 0) {
              </div>
             </div>
 
-            <!-- Button -->
             <div class="form-group">
             <label class="col-md-4 control-label" for="validate"></label>
             <div class="col-md-4">

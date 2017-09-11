@@ -7,7 +7,6 @@ $connection = new mysqli(
   $db_base
 );
 $connection->set_charset("utf8");
-
 ?>
 <!DOCTYPE html>
 <head>
@@ -29,4 +28,4 @@ $connection->set_charset("utf8");
         </ul>
       </div>
     </div>
-  </nav>
+</nav>

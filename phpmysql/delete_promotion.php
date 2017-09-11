@@ -17,6 +17,9 @@ if (isset($_GET["id"]) && $_GET["id"] != "" && $_GET["id"] != 0) {
       printf("<div class='alert alert-warning'>Erreur: %s</div>", $connection->error);
     }
   }
+  else if (!isset($_POST["user_validation"])) {
+    printf("<div class='alert alert-warning'>Veuillez cocher la case</div>\n");
+  }
 
   // On a un id en GET, on sélectionne la promotion et ses informations
   $request = sprintf("SELECT * FROM promotions WHERE id=%s", $_GET["id"]);
@@ -54,8 +57,8 @@ else {
         <label class="col-md-4 control-label" for="user_validation">Êtes-vous sûr de vouloir supprimer cette promotion ?</label>
         <div class="col-md-4">
           <div class="checkbox">
-            <label for="user_validation-0">
-              <input name="user_validation" id="user_validation-0" value="1" type="checkbox">
+            <label for="user_validation">
+              <input name="user_validation" id="user_validation" value="1" type="checkbox">
               Oui, je suis certain
             </label>
           </div>
