@@ -75,7 +75,7 @@ if ($_POST) {
       exit();
     }
 
-    $informations['form'] = "<div class='alert alert-success center'>Tâche modifiée</div>\n";
+    $informations['form'] = "<div class='alert alert-success center'> $count . ' tâche modifiée (id : ' . $lastInsertId . ')'</div>\n";
     }
 }
 
@@ -106,21 +106,21 @@ if ($_POST) {
     <form  class="form-horizontal" action="<?= basename(__FILE__) ?>" method="post">
 
       <div class="form-group col-md-12 center">
-        <label class="col-md-4 control-label" for="title">Nom de la veille</label>
+        <label class="col-md-4 control-label" for="title">Nom de la tâche</label>
         <div class="col-md-4">
         <input type="text" name="title" value="<?= htmlentities($title) ?>" placeholder="Titre *" class="center"/>
       </div>
       </div>
 
       <div class="form-group col-md-12 center">
-        <label class="col-md-4 control-label" for="description">Description de la veille</label>
+        <label class="col-md-4 control-label" for="description">Description de la tâche</label>
         <div class="col-md-4">
         <input type="text" name="description" value="<?= htmlentities($description) ?>" placeholder="Description" class="center"></input>
       </div>
       </div>
 
       <div class="form-group col-md-12 center">
-        <label class="col-md-4 control-label" for="deadline">Durée de la veille</label>
+        <label class="col-md-4 control-label" for="deadline">Date de la tâche</label>
         <div class="col-md-4">
           <input class="center" type="datetime" name="deadline" placeholder="AAAA-MM-JJ HH:MM:SS" value="<?= htmlentities($deadline) ?>"/>
         </div>

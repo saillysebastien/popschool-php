@@ -13,19 +13,20 @@
 
 
 
-<body>
+  <body>
 
-  <div class="container-fluid">
+    <div class="container-fluid">
 
-    <header>
-    <nav class="navbar navbar-fixed-top navbar-inverse bg-inverse">
+      <header>
+        <nav class="navbar navbar-fixed-top navbar-inverse bg-inverse">
 
-        <ul class="nav nav-tabs nav-fixed">
-          <li class="navbar"><a href="veilles-html.php">Listes des veilles</a></li>
-          <li class="navbar"><a href="create_veille.php">Création de veille</a></li>
-        </ul>
+          <ul class="nav nav-tabs nav-fixed">
+            <li class="navbar"><a href="index-veille.php"><i class="glyphicon glyphicon-home"></i>&nbsp;Accueil</a></li>
+            <li class="navbar"><a href="veilles-html.php"><i class="glyphicon glyphicon-th-list"></i>&nbsp;Listes des veilles</a></li>
+            <li class="navbar"><a href="create_veille.php"><i class="glyphicon glyphicon-plus"></i>&nbsp;Création de veille</a></li>
+          </ul>
 
-    </nav>
-  </header>
+        </nav>
+      </header>
 
-  <div class="separate"></div>
+      <div class="separate"></div>

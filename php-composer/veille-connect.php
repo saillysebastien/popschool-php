@@ -20,4 +20,3 @@ try {
   header('Location: error500.html', true, 302);
   exit();
 }
-?>
