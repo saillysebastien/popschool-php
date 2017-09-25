@@ -1,11 +1,12 @@
 <?php
-include('connect.php');
+require('connect.php');
 
-$request = $db->query('SELECT id, nom, forcePerso, degats, niveau, experience FROM personnages');
-
-while ($perso = $request->fetch(PDO::FETCH_ASSOC)) {
-  echo $perso['nom'], ' a ', $perso['forcePerso'], ' de force, ', $perso['degats'], ' de dégâts, ', $perso['experience'], ' d\'expérience et est au niveau ', $perso['niveau'], '.', '<br />';
-}
+// $request = $db->query('SELECT id, nom, forcePerso, degats, niveau, experience FROM personnages');
+//
+// while ($donnees = $request->fetch(PDO::FETCH_ASSOC)) {
+//   $perso = new Personnage($donnees);
+//   echo $perso->nom(), ' a ', $perso->forcePerso(), ' de force, ', $perso->degats(), ' de dégâts, ', $perso->experience(), ' d\'expérience et est au niveau ', $perso->niveau(), '<br />';
+// }
 
 class Personnage {
   private $id;
@@ -15,31 +16,41 @@ class Personnage {
   private $niveau;
   private $experience;
 
+  public function hydrate(array $donnees) {
+    foreach ($donnees as $key => $value) {
+      $method = 'set'.ucfirst($key);
+
+      if (method_exists($this, $method)) {
+        $this->method($value);
+      }
+    }
+  }
+
   public function id() {
-    return $this->_id;
+    return $this->id;
   }
 
   public function nom() {
-    return $this->_nom;
+    return $this->nom;
   }
 
   public function forcePerso() {
-    return $this->_forcePerso;
+    return $this->forcePerso;
   }
 
   public function degats() {
-    return $this->_degats;
+    return $this->degats;
   }
 
   public function niveau() {
-    return $this->_niveau;
+    return $this->niveau;
   }
 
   public function experience() {
-    return $this->_experience;
+    return $this->experience;
   }
 
-  public setId($id) {
+  public function setId($id) {
     $id = (int) $id;
     if ($id > 0) {
       $this->id = $id;
@@ -57,7 +68,7 @@ class Personnage {
     $forcePerso = (int) $forcePerso;
 
     if ($forcePerso >= 1 && $forcePerso <= 100) {
-      $this->_forcePerso = $forcePerso;
+      $this->forcePerso = $forcePerso;
     }
   }
 
@@ -65,7 +76,7 @@ class Personnage {
     $degats = (int) $degats;
 
     if ($degats >= 0 && $degats <= 100) {
-      $this->_degats = $degats;
+      $this->degats = $degats;
     }
   }
 
@@ -73,7 +84,7 @@ class Personnage {
     $niveau = (int) $niveau;
 
     if ($niveau >= 1 && $niveau <= 100) {
-      $this->_niveau = $niveau;
+      $this->niveau = $niveau;
     }
   }
 
@@ -81,7 +92,7 @@ class Personnage {
     $experience = (int) $experience;
 
     if ($experience >= 1 && $experience <= 100) {
-      $this->_experience = $experience;
+      $this->experience = $experience;
     }
   }
 }
