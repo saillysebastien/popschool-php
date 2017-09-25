@@ -17,7 +17,7 @@ $params = json_decode($_POST["promotion"],true);
 $request = sprintf("UPDATE promotions SET
                 name='%s',
                 startdate='%s',
-                enddate=%d
+                enddate='%s'
                 WHERE id='%s'",
                 $params["name"],
                 $params["startdate"],

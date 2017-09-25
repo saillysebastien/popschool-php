@@ -17,11 +17,11 @@ $params = json_decode($_POST["student"], true);
 $request = sprintf("UPDATE eleves SET
                 firstname='%s',
                 lastname='%s',
-                promotion_id=%d
+                idpromotion=%d
                 WHERE id='%s'",
                 $params["firstname"],
                 $params["lastname"],
-                $params["promotion_id"],
+                $params["idpromotion"],
                 $params["id"]);
 
 if($connection->query($request)) {

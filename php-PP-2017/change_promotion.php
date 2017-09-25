@@ -14,7 +14,7 @@ if (isset($_GET["id"]) && $_GET["id"] != "" && $_GET["id"] != 0) {
       $_POST["promotionname"],
       $_POST["startdate"],
       $_POST["enddate"],
-      $_POST["id"]);
+      $_GET["id"]);
       if($connection->query($request)) {
         printf("<div class='alert alert-success'>Promotion modifiée</div>\n<a href='promotions.php'>Retour à la liste des promotions</a>");
       }

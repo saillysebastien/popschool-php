@@ -1,20 +1,20 @@
 <?php
 include("include/header.php");
 // Si on n’a pas de id dans les paramètres de l’URL, on bloque la page
-if (isset($_GET["id"]) && $_GET["id"] != "" && $_GET["id"] != 0) {
+if (isset($_GET["id"]) && $_GET["id"] != " " && $_GET["id"] != 0) {
   // Si on a des variables en POST, on tente de modifier la promotion ciblée
-  if (isset($_POST["firstname"]) && isset($_POST["lastname"]) && isset($_POST["promotion_id"])) {
+  if (isset($_POST["firstname"]) && isset($_POST["lastname"]) && isset($_POST["idpromotion"])) {
     $request = sprintf("UPDATE eleves SET
       firstname='%s',
       lastname='%s',
-      promotion_id=%d
+      idpromotion=%d
       WHERE id='%s'",
       $_POST["firstname"],
       $_POST["lastname"],
-      $_POST["promotion_id"],
+      $_POST["idpromotion"],
       $_POST["id"]);
       if($connection->query($request)) {
-        printf("<div class='alert alert-success'>Éléve modifié</div>\n<a href='students .php'>Retour à la liste des élèves</a>");
+        printf("<div class='alert alert-success'>Éléve modifié</div>\n<a href='students.php'>Retour à la liste des élèves</a>");
       }
       else {
         // Gestion d’erreur SQL
@@ -47,7 +47,7 @@ if (isset($_GET["id"]) && $_GET["id"] != "" && $_GET["id"] != 0) {
           <div class="col-md-4">
             <input id="firstname" name="firstname"
             placeholder="Prénom" class="form-control input-md"
-            required="" value="<?php printf("%s",$student["firstname"]); ?>"
+            required="" value="<?php printf("%s", $student["firstname"]); ?>"
             type="text">
             <span class="help-block">Indiquez ici le prénom de l’élève</span>
           </div>
@@ -57,16 +57,16 @@ if (isset($_GET["id"]) && $_GET["id"] != "" && $_GET["id"] != 0) {
           <div class="col-md-4">
             <input id="lastname" name="lastname"
             placeholder="Nom" class="form-control input-md"
-            required="" value="<?php printf("%s",$student["lastname"]); ?>"
+            required="" value="<?php printf("%s", $student["lastname"]); ?>"
             type="text">
             <span class="help-block">Indiquez ici le nom de l’élève</span>
           </div>
         </div>
 
         <div class="form-group">
-          <label class="col-md-4 control-label" for="promotion_id">Promotion</label>
+          <label class="col-md-4 control-label" for="idpromotion">Promotion</label>
           <div class="col-md-4">
-            <input type="text" id="promotion_id" name="promotion_id" class="form-control" value="<?php printf("%s", $student["idpromotion"]); ?>">
+            <input type="text" id="idpromotion" name="idpromotion" class="form-control" value="<?php printf("%s", $student["idpromotion"]); ?>">
              </div>
             </div>
 
@@ -74,7 +74,7 @@ if (isset($_GET["id"]) && $_GET["id"] != "" && $_GET["id"] != 0) {
             <div class="form-group">
             <label class="col-md-4 control-label" for="validate"></label>
             <div class="col-md-4">
-            <input type="hidden" name="id" value="<?php printf("%s", $promotion["id"]);?>">
+            <input type="hidden" name="id" value="<?php printf("%s", $student["id"]);?>">
             <button id="validate" name="validate" class="btn btn-primary">Valider</button>
             </div>
             </div>
