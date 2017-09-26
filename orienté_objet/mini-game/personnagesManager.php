@@ -3,51 +3,51 @@
 include('personnage.php');
 
 class PersonnagesManager {
-  private $_db;
+  private $bdd;
 
   public function __construct($db) {
     $this->setDb($db);
   }
 
   public function add(Personnage $perso) {
-    $q = $this->_db->prepare('INSERT INTO personnages(nom) VALUES(:nom)');
+    $q = $this->bdd->prepare('INSERT INTO personnages(nom) VALUES(:nom)');
     $q->bindValue(':nom', $perso->nom());
     $q->execute();
 
     $perso->hydrate([
-      'id' => $this->_db->lastInsertId(),
+      'id' => $this->bdd->lastInsertId(),
       'degats' => 0,
     ]);
   }
 
   public function count() {
-    return current($this->_db->query('SELECT COUNT(*) FROM personnages')->fetch());
+    return current($this->bdd->query('SELECT COUNT(*) FROM personnages')->fetch());
   }
 
   public function delete(Personnage $perso) {
-    $this->_db->exec('DELETE FROM personnages WHERE id = '.$perso->id());
+    $this->bdd->exec('DELETE FROM personnages WHERE id = '.$perso->id());
   }
 
   public function exists($info) {
     if (is_int($info)) {
-      return (bool) $this->_db->query('SELECT COUNT(*) FROM personnages WHERE id = '.$info)->fetchColumm();
+      return (bool) current($this->bdd->query('SELECT COUNT(*) FROM personnages WHERE id = '.$info)->fetch());
     }
 
-    $q = $this->_db->prepare('SELECT COUNT(*) FROM personnages WHERE nom = :nom');
+    $q = $this->bdd->prepare('SELECT COUNT(*) FROM personnages WHERE nom = :nom');
     $q->execute([':nom' => $info]);
 
-    return (bool) $q->fetchColumm();
+    return (bool) current($q->fetch());
   }
 
   public function get($info) {
     if (is_int($info)) {
-      $q = $this->_db->query('SELECT id, nom, degats FROM personnages WHERE id = '.$info);
+      $q = $this->bdd->query('SELECT id, nom, degats FROM personnages WHERE id = '.$info);
       $donnees = $q->fetch(PDO::FETCH_ASSOC);
 
       return new Personnage($donnees);
     }
     else {
-      $q = $this->_db->prepare('SELECT id, nom, degats FROM personnages WHERE nom =:nom');
+      $q = $this->bdd->prepare('SELECT id, nom, degats FROM personnages WHERE nom = :nom');
       $q->execute(['nom' => $info]);
 
       return new Personnage($q->fetch(PDO::FETCH_ASSOC));
@@ -57,8 +57,8 @@ class PersonnagesManager {
   public function getList($nom) {
     $persos =  [];
 
-    $q = $this->_db->prepare('SELECT id, nom, degats FROM personnages WHERE nom = :nom ORDER by nom');
-    $q->execute(['nom => $nom']);
+    $q = $this->bdd->prepare('SELECT id, nom, degats FROM personnages WHERE nom <> :nom ORDER BY nom');
+    $q->execute([':nom' => $nom]);
 
     while ($donnees = $q->fetch(PDO::FETCH_ASSOC)) {
       $persos[] = new Personnage($donnees);
@@ -68,7 +68,7 @@ class PersonnagesManager {
   }
 
   public function update(Personnage $perso) {
-    $q = $this->_db->prepare('UPDATE personnages SET degats = :degats WHERE id = :id');
+    $q = $this->bdd->prepare('UPDATE personnages SET degats = :degats WHERE id = :id');
 
     $q->bindValue(':degats', $perso->degats(), PDO::PARAM_INT);
     $q->bindValue(':id', $perso->id(), PDO::PARAM_INT);
@@ -77,6 +77,6 @@ class PersonnagesManager {
   }
 
   public function setDb(PDO $db) {
-    $this->_db = $db;
+    $this->bdd = $db;
   }
 }

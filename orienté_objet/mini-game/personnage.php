@@ -2,8 +2,8 @@
 
 class Personnage {
   private $id,
-  $nom,
-  $degats;
+          $nom,
+          $degats;
 
   const CEST_MOI = 1;
   const PERSONNAGE_TUE = 2;

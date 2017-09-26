@@ -8,9 +8,21 @@ function chargerClasse($classname) {
 
 spl_autoload_register('chargerClasse');
 
+session_start();
+
+if (isset($_GET['deconnexion'])) {
+  session_destroy();
+  header('Location: .');
+  exit();
+}
+
 $db->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_WARNING);
 
 $manager = new PersonnagesManager($db);
+
+if (isset($_SESSION['nom'])) {
+  $perso = $_SESSION['perso'];
+}
 
 if (isset($_POST['creer']) && isset($_POST['nom'])) {
   $perso = new Personnage(['nom' => $_POST['nom']]);
@@ -36,7 +48,42 @@ elseif (isset($_POST['utiliser']) && isset($_POST['nom'])) {
   }
 }
 
+elseif (isset($_GET['frapper'])) {
+  if (!isset($perso)) {
+    $message = 'Merci de bien vouloir créer un personnage ou de vous identifier.';
+  }
+  else {
+    if (!$manager->exists((int) $_GET['frapper'])) {
+      $message = 'Le personnage que vous voulez frapper n\'existe pas !';
+    }
+    else {
+      $persoAFrapper = $manager->get((int) $_GET['frapper']);
 
+      $retour = $perso->frapper($persoAFrapper);
+
+      switch ($retour) {
+
+        case Personnage::PERSONNAGE_MOI :
+        $message = 'Mais pourquoi voulez vous vous frapper ?';
+        break;
+
+        case Personnage::PERSONNAGE_FRAPPE :
+        $message = 'Le personnage a bien été frappé';
+
+        $manager->update($perso);
+        $manager->update($persoAFrapper);
+        break;
+
+        case Personnage::PERSONNAGE_TUE :
+        $message = 'Vous avez tué ce personnage !';
+
+        $manager->update($perso);
+        $manager->delete($persoAFrapper);
+        break;
+      }
+    }
+  }
+}
 ?>
 <!DOCTYPE html>
 <html>
@@ -53,8 +100,10 @@ elseif (isset($_POST['utiliser']) && isset($_POST['nom'])) {
   }
   if (isset($perso)) {
     ?>
+    <p><a href="?deconnexion=1">Déconnexion</a></p>
+
     <fieldset>
-      <legend> Mes informations</legend>
+      <legend>Mes informations</legend>
       <p>
         Nom: <?= htmlspecialchars($perso->nom()) ?><br />
         Dégats: <?= $perso->degats() ?>
@@ -66,12 +115,13 @@ elseif (isset($_POST['utiliser']) && isset($_POST['nom'])) {
       <p>
         <?php
         $persos = $manager->getList($perso->nom());
+
         if (empty($persos)) {
           echo 'Personne à frapper !';
         }
         else {
           foreach ($persos as $unPerso) {
-            echo '<a href="?frapper=', $unPerso->id(), '">',htmlspecialchars($unPerso->nom()), '</a> (degats : ', $unPerso->degats(), ')<br />';
+            echo '<a href="?frapper=', $unPerso->id(), '">', htmlspecialchars($unPerso->nom()), '</a> (degats : ', $unPerso->degats(), ')<br />';
           }
         }
         ?>
@@ -94,3 +144,7 @@ elseif (isset($_POST['utiliser']) && isset($_POST['nom'])) {
   ?>
 </body>
 </html>
+<?php
+if (isset($perso)) {
+  $_SESSION['perso'] = $perso;
+}
